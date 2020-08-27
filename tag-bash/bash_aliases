@@ -1,7 +1,10 @@
 # ~/.bash_aliases
 
-alias v='vim'
-alias vrc='v ~/.vimrc'
+alias e='nvim'
+alias ecv='e ~/.config/nvim/init.vim'
+alias ecb='e ~/.bashrc'
+alias ecw='e ~/.config/bspwm/bspwmrc'
+alias ecs='e ~/.config/sxhkd/sxhkdrc'
 
 # sort it, env!
 alias env='env | sort'
@@ -10,7 +13,5 @@ alias env='env | sort'
 alias cod='od -A x -t x1 -c'
 alias xod='od -A x -t x1z'
 
-# juju
-alias jus='juju status'
-alias wjus='watch juju status'
-alias judl='juju debug-log'
+
+alias glk='gpg --keyid-format 0xLONG -k'

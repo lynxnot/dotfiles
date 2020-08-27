@@ -1,0 +1,2 @@
+#
+source <(helm completion bash)

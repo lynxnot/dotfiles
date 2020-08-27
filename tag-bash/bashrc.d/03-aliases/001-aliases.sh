@@ -1,5 +1,5 @@
 # some more ls aliases
-alias ll='ls -lhF --dereference-command-line-symlink-to-dir'
+alias ll='ls -lhF --dereference-command-line-symlink-to-dir --group-directories-first'
 alias la='ls -alhF'
 alias l='ls -CF'
 
@@ -11,3 +11,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
+# Socks Proxy via ssh tunnel
+alias mpc-proxy='export https_proxy=socks5://localhost:3731'

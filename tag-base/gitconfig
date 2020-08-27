@@ -3,3 +3,5 @@
 	name = lynxnot
 [push]
 	default = simple
+[diff "sopsdiffer"]
+	textconv = sops -d

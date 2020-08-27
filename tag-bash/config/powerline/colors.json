@@ -77,7 +77,40 @@
 		"solarized:violet": [13, "6c71c4"],
 		"solarized:blue": [4, "268bd2"],
 		"solarized:cyan": [6, "2aa198"],
-		"solarized:green": [2, "859900"]
+		"solarized:green": [2, "859900"],
+
+
+		"gruvbox:bg0": [0, "282828"],
+		"gruvbox:red": [1, "cc241d"],
+		"gruvbox:green": [2, "98971a"],
+		"gruvbox:yellow": [3, "d79921"],
+		"gruvbox:blue": [4, "458588"],
+		"gruvbox:purple": [5, "b16286"],
+		"gruvbox:aqua": [6, "689d6a"],
+		"gruvbox:gray7": [7, "a89984"],
+		"gruvbox:gray8": [8, "928374"],
+		"gruvbox:red-light": [9, "fb4934"],
+		"gruvbox:green-light": [10, "b8bb26"],
+		"gruvbox:yellow-light": [11, "fabd2f"],
+		"gruvbox:blue-light": [12, "83a598"],
+		"gruvbox:purple-light": [13, "d3869b"],
+		"gruvbox:aqua-light": [14, "8ec07c"],
+		"gruvbox:fg": [15, "ebdbb2"],
+
+		"gruvbox:bg0_h": [234, "282828"],
+		"gruvbox:bg0_s": [236, "32302f"],
+		"gruvbox:bg1": [237, "3c3836"],
+		"gruvbox:bg2": [239, "504945"],
+		"gruvbox:bg3": [241, "665c54"],
+		"gruvbox:bg4": [243, "7c6f64"],
+		"gruvbox:fg4": [246, "a89984"],
+		"gruvbox:fg3": [248, "bdae93"],
+		"gruvbox:fg2": [250, "d5c4a1"],
+		"gruvbox:fg0": [229, "fbf1c7"],
+
+		"gruvbox:orange": [166, "fbf1c7"],
+		"gruvbox:orange-light": [208, "fbf1c7"]
+
 	},
 	"gradients": {
 		"dark_GREEN_Orange_red": [

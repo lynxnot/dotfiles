@@ -1,25 +1,36 @@
 #! /bin/sh
 
-#hsetroot -fill /usr/share/backgrounds/Spring_by_Peter_Apas.jpg
-#hsetroot -fill /usr/share/backgrounds/Black_hole_by_Marek_Koteluk.jpg
-#hsetroot -fill ~/Pictures/wallpapers/linuxwall-1920x1200.jpg
-hsetroot -fill ~/Pictures/wallpapers/conquer-the-world-1920x1200.jpg
+# Setup Monitors
+xrandr --output DP-2 --mode 2560x1440 --rate 144.0 --primary \
+       --output DP-0 --auto --left-of DP-2 \
+       --output DVI-D-0 --auto --right-of DP-2
+
+feh --bg-fill ~/Pictures/Wallpapers/yopsi.png
+
+# Set GTK Theme
+#export GTK2_RC_FILES=/usr/share/themes/Materia-dark-compact/gtk-2.0/gtkrc
+#export GTK_THEME=Materia:dark-compact
 
 # disable touchpad
-xinput disable `xinput list --id-only "ETPS/2 Elantech Touchpad"`
+#xinput disable `xinput list --id-only "ETPS/2 Elantech Touchpad"`
 # remap caps to escape
 setxkbmap -option caps:escape
 # enable numlock
 numlockx on
 
 # Greek monitors
-bspc monitor -d α β γ δ ε ζ η θ κ λ
+#bspc monitor -d α β γ δ ε ζ η θ κ λ
 
 #bspc monitor -d ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩
 #bspc monitor -d I II III IV V VI VII VIII IX X
 
+bspc monitor DP-2 -d α β γ δ 
+bspc monitor DP-0 -d ε ζ η 
+bspc monitor DVI-D-0 -d θ κ λ
+
 bspc config border_width             8
 bspc config window_gap              32
+bspc config bottom_padding          24
 bspc config focus_follows_pointer true
 
 bspc config split_ratio           0.50
@@ -32,12 +43,14 @@ bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a google-chrome desktop='^2' follow=on
 bspc rule -a nautilus desktop='^3' follow=on
 bspc rule -a Spotify desktop='^4' follow=on
-bspc rule -a jetbrains-pycharm-ce desktop='^5' follow=on
-bspc rule -a mplayer2 state=floating
-bspc rule -a Kupfer.py focus=on
-bspc rule -a Screenkey manage=off
+#bspc rule -a jetbrains-pycharm-ce desktop='^5' follow=on
+#bspc rule -a mplayer2 state=floating
+#bspc rule -a Kupfer.py focus=on
+#bspc rule -a Screenkey manage=off
 
 sxhkd &
-panel &
-urxvtd &
-compton &
+yabar &
+#panel &
+#urxvtd &
+compton -f -D 3 &
+unclutter &
