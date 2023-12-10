@@ -1,0 +1,10 @@
+#!/bin/sh
+
+CHEZMOI_CONF_DIR="$HOME/.config/chezmoi"
+AGE_KEY_FILE="$CHEZMOI_CONF_DIR/key.asc"
+
+if [ ! -f "$AGE_KEY_FILE" ]; then
+    mkdir -p "$CHEZMOI_CONF_DIR"
+    chezmoi age decrypt --passphrase --output "$AGE_KEY_FILE" "{{ .chezmoi.sourceDir }}/key.asc.age" 
+    chmod 600 "$AGE_KEY_FILE"
+fi

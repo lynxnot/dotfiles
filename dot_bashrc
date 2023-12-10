@@ -1,0 +1,164 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# actually make sense, thx mrzool
+source ~/repos/github.com/mrzool/bash-sensible/sensible.bash
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -lFh --group-directories-first'
+alias la='ll -a'
+alias l='ls -CF'
+
+# i never use this but it looks cool to have a oneliner that goes beyond the 80-th column
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# assert tab-tab dominance
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+## compute to complete
+[[ -x $(command -v chezmoi) ]]       && . <(chezmoi completion bash)
+[[ -x $(command -v kubectl) ]]       && . <(kubectl completion bash)
+[[ -x $(command -v helm) ]]          && . <(helm completion bash)
+[[ -x $(command -v npm) ]]           && . <(npm completion)
+[[ -x $(command -v eksctl) ]]        && . <(eksctl completion bash)
+[[ -x $(command -v aws_completer) ]] && complete -C 'aws_completer' aws
+[[ -x $(command -v terraform) ]]     && complete -C 'terraform' terraform
+
+## environmentalisms
+export EDITOR=nvim
+
+## z is the new j
+. /home/d/repos/github.com/rupa/z/z.sh
+
+## asdf isn't qwer
+. "$HOME"/.asdf/asdf.sh
+. "$HOME"/.asdf/completions/asdf.bash
+
+## got me a foozy foynder, m8
+[ -f "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"
+
+# fuse mount that gdrive
+# this should migrate to profile and/or be smarter
+if command -v rclone &>/dev/null; then
+  rclone mount --daemon --vfs-cache-mode full gdrive-df:/ ~/drive/
+fi
+
+# yq is pretty qool
+yq ()
+{
+  docker run --rm -i -v "${PWD}":/workdir mikefarah/yq "$@"
+}
+
+# dude, where is my repo?
+# this is too slow
+lr ()
+{
+    local repos=/home/d/repos
+    local repo=$(find ${repos} -type d -iname ".git" |
+        sed 's#/.git$##' |
+        sed "s#^${repos}/##" |
+        fzf)
+    cd $repos/$repo
+}
+
+# ansible in a container
+ansible29 ()
+{
+    docker run --rm -it \
+        -v "$(pwd)":/ansible \
+        -v "$HOME"/.ssh/id_rsa:/root/.ssh/id_rsa \
+        -v "$(readlink -f "$SSH_AUTH_SOCK")":/ssh-agent \
+        -e SSH_AUTH_SOCK=/ssh-agent \
+        --workdir=/ansible \
+        opensourcerero/ansible-2.9.10:latest "$@"
+}
+
+# git-sim
+# vely bloken, y keep?
+git-sim ()
+{
+    docker run --rm \
+        -v "$(pwd):/usr/src/git-sim" \
+        -u "$(id -u):$(id -g)" \
+        git-sim "$@"
+}
+
+# shellGL - vertex shaders technology
+shell-gl ()
+{
+    local _name=$1
+    pushd ~/repos/gitlab.com/dwt1/shell-color-scripts >/dev/null
+    DEV=1 ./colorscript.sh -e "$_name"
+    popd >/dev/null
+}
+ 
+shell-gl-random ()
+{
+    local _face=()
+    _face[0]="alpha"
+    _face[1]="crunchbang"
+    _face[2]="crunchbang-mini"
+    _face[3]="darthvader"
+    _face[4]="elfman"
+    _face[5]="faces"
+    _face[6]="fade"
+    _face[6]="ghosts"
+    _face[7]="jangofett"
+    _face[8]="monster"
+    _face[9]="mouseface"
+    _face[10]="mouseface2"
+    _face[11]="pacman"
+    _face[12]="panes"
+    _face[13]="rally-x"
+    _face[14]="six"
+    _face[15]="space-invaders"
+    _face[16]="square"
+    _face[17]="tanks"
+    _face[18]="thebat2"
+    _face[19]="tiefighter1"
+    _face[20]="zwaves"
+    _rand=$(date +%s)
+    local _selected=${_face[ $_rand % ${#_face[@]} ]}
+    shell-gl $_selected
+}
+ 
+shell-gl-random
+
+# launch starship
+if test -x "$(command -v starship)"; then
+  eval "$(starship init bash)"
+else
+  export PS1="[\[\033[01;32m\]\h \[\033[01;33m\]\u \[\033[01;94m\]\w\[\033[00m\]] \[\033[01m\]\$\[\033[00m\] "
+fi
+

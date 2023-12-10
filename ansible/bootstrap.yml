@@ -1,0 +1,224 @@
+---
+- name: bootstrap machine
+  hosts: localhost
+  become: false
+  connection: local
+  gather_facts: true
+
+  vars:
+    asdf_version: v0.13.1
+    nerd_fonts_version: v3.1.1
+
+  tasks:
+
+    - name: create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "{{ ansible_user_dir }}/repos/github.com"
+        - "{{ ansible_user_dir }}/repos/gitlab.com"
+        - "{{ ansible_user_dir }}/iotas"
+        - "{{ ansible_user_dir }}/.local/share/fonts"
+
+    - name: git clones
+      ansible.builtin.git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+        update: false
+      loop:
+        - repo: https://github.com/mrzool/bash-sensible.git
+          dest: "{{ ansible_user_dir }}/repos/github.com/mrzool/bash-sensible"
+        - repo: https://github.com/rupa/z.git
+          dest: "{{ ansible_user_dir }}/repos/github.com/rupa/z"
+        - repo: https://gitlab.com/dwt1/shell-color-scripts.git
+          dest: "{{ ansible_user_dir }}/repos/gitlab.com/dwt1/shell-color-scripts"
+
+    - name: nerd fonts
+      include_tasks: task_nerd_fonts.yml
+      loop:
+        - 3270
+        - Agave
+        - CascadiaCode
+        - CascadiaMono
+        - Cousine
+        - Hasklig
+        - Hermit
+        - JetBrainsMono
+        - Monaspace
+        - SourceCodePro
+        - UbuntuMono
+
+    # https://askubuntu.com/questions/1286545/what-commands-exactly-should-replace-the-deprecated-apt-key
+    - name: add GPG keys for apt repos
+      become: true
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.dest }}"
+        mode: "0644"
+      loop:
+        - url: https://dl.google.com/linux/linux_signing_key.pub
+          dest: /etc/apt/keyrings/google.asc
+        - url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+          dest: /etc/apt/keyrings/brave.gpg
+        - url: https://packages.microsoft.com/keys/microsoft.asc
+          dest: /etc/apt/keyrings/microsoft.asc
+        - url: https://download.docker.com/linux/ubuntu/gpg
+          dest: /etc/apt/keyrings/docker.asc
+        - url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+          dest: /etc/apt/keyrings/gh-cli.gpg
+        - url: https://downloads.k8slens.dev/keys/gpg
+          dest: /etc/apt/keyrings/lens.asc
+
+    - name: add apt repos
+      become: true
+      ansible.builtin.apt_repository:
+        repo: "{{ item.repo }}"
+        state: present
+        filename: "{{ item.file }}"
+        update_cache: false
+      loop:
+        - repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/google.asc] https://dl.google.com/linux/chrome/deb/ stable main"
+          file: chrome
+        - repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/brave.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+          file: brave
+        - repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.asc] https://packages.microsoft.com/repos/code stable main"
+          file: vscode
+        - repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+          file: docker
+        - repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/gh-cli.gpg] https://cli.github.com/packages stable main"
+          file: gh-cli
+        - repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/lens.asc] https://downloads.k8slens.dev/apt/debian stable main"
+          file: lens
+
+    - name: install packages
+      become: true
+      ansible.builtin.apt:
+        pkg:
+          - google-chrome-stable
+          - brave-browser
+          - code
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+          - gh
+          - lens
+          - alacritty
+          - automake
+          - bind9-utils
+          - bridge-utils
+          - build-essential
+          - byobu
+          - clang
+          - curl
+          - dosfstools
+          - figlet
+          - ffmpeg
+          - gimp
+          - gpac
+          - inkscape
+          - krita
+          - llvm
+          - lolcat
+          - maven
+          - mediainfo
+          - python-is-python3
+          - toilet
+          - tree
+          - whois
+          # python build deps
+          - libbz2-dev
+          - libffi-dev
+          - liblzma-dev
+          - libncursesw5-dev
+          - libreadline-dev
+          - libsqlite3-dev
+          - libssl-dev
+          - libxml2-dev
+          - libxmlsec1-dev
+          - tk-dev
+          - xz-utils
+          - zlib1g-dev
+          # ghcup deps not already above
+          - libffi8
+          - libgmp-dev
+          - libgmp10
+          - libncurses-dev
+          - libncurses5
+          - libtinfo5
+          # sadness ensues #free_lxd
+          - snapd
+          # mp4analyser deps
+          - python-tk
+          - idle3
+        state: present
+        update_cache: true
+
+    # giga irksome omega boog: https://github.com/ansible/ansible/issues/41996
+    # unfixed in ansible-2.10 from apt-repos (affects 2.7 wth?!)
+    - name: install flatpaks
+      community.general.flatpak:
+        name: "{{ item }}"
+        method: user
+        state: present
+      loop:
+        - com.spotify.Client
+        - com.bitwarden.desktop
+        - com.skype.Client
+        - com.slack.Slack
+        - io.github.shiftey.Desktop
+        - org.gnome.meld
+        - rest.insomnia.Insomnia
+        - org.tenacityaudio.Tenacity
+        - com.github.johnfactotum.Foliate
+        - md.obsidian.Obsidian
+
+    - name: check if asdf is installed
+      ansible.builtin.stat:
+        path: "{{ ansible_user_dir }}/.asdf/bin/asdf"
+      register: check_asdf
+
+    - name: install asdf if necessary
+      ansible.builtin.git:
+        repo: https://github.com/asdf-vm/asdf.git
+        dest: "{{ ansible_user_dir }}/.asdf"
+        version: "{{ asdf_version }}"
+      when: not check_asdf.stat.exists
+
+    - name: install asdf plugins
+      ansible.builtin.command:
+        cmd: "{{ ansible_user_dir }}/.asdf/bin/asdf plugin-add {{ item }}"
+        creates: "{{ ansible_user_dir }}/.asdf/plugins/{{ item }}"
+      loop:
+        # tools set
+        - awscli
+        - bat
+        - bitwarden
+        - eksctl
+        - fzf
+        - helm
+        - krew
+        - kubectl
+        - neovim
+        - rclone
+        - ripgrep
+        - shellcheck
+        - starship
+        - terraform
+        - terraform-ls
+        - yarn
+        # languages set
+        - erlang
+        - golang
+        - java
+        - nim
+        - nodejs
+        - python
+        - rust
+        - stack
+        - zig
+        - zigmod
+

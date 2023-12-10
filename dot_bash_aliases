@@ -1,0 +1,57 @@
+alias alais='alias'
+
+alias vim='nvim'
+alias vimdiff='nvim -d'
+alias vash='vim ~/.bashrc'
+alias valias='vim ~/.bash_aliases'
+alias vrc='vim ~/.config/nvim/init.lua'
+alias vnotes='vim ~/Dropbox/rts-notes/notes-*.md'
+
+alias rkubectl='https_proxy="socks5://localhost:3731" kubectl'
+alias rhelm='https_proxy="socks5://localhost:3731" helm'
+
+alias shprod='ssh mpc-prod-ix'
+alias shtest='ssh mpc-test-ix'
+alias tunprod='ssh mpc-prod-ix-tun'
+alias tuntest='ssh mpc-test-ix-tun'
+
+alias ghb='gh browse 2>/dev/null'
+alias gis='git status'
+alias gif='git fetch'
+alias gid='git diff'
+alias gia='git add'
+alias gim='git commit -m'
+alias gil='git log --oneline'
+alias giw='git whatchanged'
+alias gull='git pull'
+alias gulr='git pull --rebase'
+alias gush='git push'
+alias gibls='git branch -a'
+alias gibrm='git branch -D'
+alias gibprune='git remote prune origin'
+
+# `watch` doesnt know about shell aliases, by using an alias with a space at the end
+# we ensures that the eventual alias will be expanded
+# -c Interpret ANSI color and style sequences
+alias watch='watch -c '
+
+alias doprune='docker system prune --volumes -f'
+alias doi='docker images'
+alias dop='docker ps -a'
+
+# hmm, sussy stuff
+alias akamai='docker run --rm --name akamai-cli -it -v $HOME/.edgerc:/root/.edgerc:ro -v $HOME/.akamai-cli:/cli/.akamai-cli akamai/shell'
+alias hmount="mount | awk '{ printf(\"%32s -> %s\n\", \$3, \$1) }'"
+alias senv='env | sort'
+
+
+# ansible
+#alias ansible='ansible29 ansible'
+#alias ansible-playbook='ansible29 ansible-playbook'
+alias ansible29-cli='ansible29 /bin/sh'
+
+alias ktit='kubectl run df-ktit --rm -it --image=giantswarm/tiny-tools -- sh'
+alias kns='kubectl ns'
+alias ktx='kubectl ctx'
+
+alias ubu='lxc start ubuntu --console=vga >/dev/null 2>&1 &'

@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+set -xeu
+
+[[ $# -ne 3 ]] && {
+  echo "Usage: qcow-zfs VM-NAME VM-DEVICE SIZE_IN_GB"
+  exit 1
+}
+
+# unleash cow powers
+sudo -v
+
+DEVICE_NAME=${1}_${2}
+SIZE=$3
+RSIZE="8K"
+
+sudo zfs create "ztank/qemu/$DEVICE_NAME"
+sudo zfs set recordsize=$RSIZE "ztank/qemu/$DEVICE_NAME"
+sudo zfs set compression=lz4 "ztank/qemu/$DEVICE_NAME"
+sudo qemu-img create -f qcow2 -ocluster_size=$RSIZE "/ztank/qemu/${DEVICE_NAME}/${DEVICE_NAME}.qcow2" "${SIZE}G"

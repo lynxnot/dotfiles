@@ -1,0 +1,7 @@
+encryption = "age"
+[age]
+    identity = "~/.config/chezmoi/key.asc"
+    recipient = "age1apa43ktypc59qn90ft5vs6szchxuc68j92lzwthjhzae9jmctsrse7ctra"
+[merge]
+    command = "nvim"
+    args = ["-d", "{{ "{{" }} .Destination {{ "}}" }}", "{{ "{{" }} .Source {{ "}}" }}", "{{ "{{" }} .Target {{ "}}" }}"]

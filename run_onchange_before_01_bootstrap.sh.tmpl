@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eu
+
+# ansible/bootstrap.yaml hash: {{ include "ansible/bootstrap.yml" | sha256sum }}
+
+ansible-playbook -K "$CHEZMOI_SOURCE_DIR/ansible/bootstrap.yml"
+
+# vim: ft=sh.template

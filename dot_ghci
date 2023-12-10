@@ -1,0 +1,1 @@
+:set prompt "\ESC[93m GHCi\STX \ESC[34m%s\STX\n \ESC[92m\STXᨅ ->\ESC[m\STX "
