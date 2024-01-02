@@ -52,6 +52,7 @@ alias senv='env | sort'
 #alias ansible-playbook='ansible29 ansible-playbook'
 alias ansible29-cli='ansible29 /bin/sh'
 
+alias kaws='kubectl run df-kaws --rm -it --image=amazon/aws-cli --command bash'
 alias ktit='kubectl run df-ktit --rm -it --image=giantswarm/tiny-tools -- sh'
 alias kns='kubectl ns'
 alias ktx='kubectl ctx'
