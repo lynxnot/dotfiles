@@ -108,7 +108,7 @@
           - lens
           - alacritty
           - automake
-          - bind9-utils
+          - bind9-dnsutils
           - bridge-utils
           - build-essential
           - byobu
