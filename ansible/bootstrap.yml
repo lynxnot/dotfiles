@@ -116,6 +116,7 @@
           - curl
           - dosfstools
           - figlet
+          - audacity
           - ffmpeg
           - gimp
           - gpac
@@ -173,7 +174,8 @@
         - io.github.shiftey.Desktop
         - org.gnome.meld
         - rest.insomnia.Insomnia
-        - org.tenacityaudio.Tenacity
+        - com.github.wwmm.easyeffects
+        - org.rncbc.qpwgraph
         - com.github.johnfactotum.Foliate
         - md.obsidian.Obsidian
 
