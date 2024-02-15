@@ -1,0 +1,19 @@
+[user]
+	name = lynxnot
+	email = lynxnot@users.noreply.github.com
+[core]
+	sshCommand = ssh -i ~/.ssh/id_rsa
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[pull]
+	ff = only
+[init]
+	defaultBranch = main
+[alias]
+	adog = log --all --decorate --oneline --graph
+	lref = log --all --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%S%C(reset) %C(auto)%d%C(reset)%n''         %C(white)%aD%C(reset) %C(dim white)- %s%C(reset)'
+[includeIf "gitdir:~/repos/github.com/SRGSSR/"]
+	path = ~/.gitconfig.work
