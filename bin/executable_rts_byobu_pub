@@ -18,7 +18,7 @@ byobu-tmux new-window -t "${SESSION}:1" -n 'PROD-ZH'
 byobu-tmux new-window -t "${SESSION}:2" -n 'PUP-PROD-ZH'
 byobu-tmux new-window -t "${SESSION}:3" -n 'TEST-ZH'
 byobu-tmux new-window -t "${SESSION}:4" -n 'PUP-TEST-ZH'
-byobu-tmux new-window -t "${SESSION}:5" -n 'MDC-LEGACY'
+#byobu-tmux new-window -t "${SESSION}:5" -n 'MDC-LEGACY'
 
 #byobu-tmux new-window -t "${SESSION}:5" -n 'PROD-BE'
 #byobu-tmux new-window -t "${SESSION}:6" -n 'PROXY'
@@ -38,8 +38,8 @@ byobu-tmux new-window -t "${SESSION}:5" -n 'MDC-LEGACY'
 
 # Connect remote sessions
 
-byobu-tmux select-window -t "$SESSION:5"
-byobu-tmux send-keys 'ssh mdc-backdoor' C-m
+#byobu-tmux select-window -t "$SESSION:5"
+#byobu-tmux send-keys 'ssh mdc-backdoor' C-m
 
 byobu-tmux select-window -t "$SESSION:4"
 byobu-tmux send-keys 'ssh mpc-test-ix' C-m
