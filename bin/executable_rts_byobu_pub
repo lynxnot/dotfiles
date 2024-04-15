@@ -5,9 +5,7 @@ SESSION=$USER
 byobu-tmux has-session -t "$SESSION" &>/dev/null && echo "Session exits!" && exit 1
 
 # start all the tunnels
-ssh mdc-backdoor-tun
 ssh mpc-prod-ix-tun
-#ssh mpc-prod-eq-tun
 
 # Start byobu
 byobu-tmux -2 new-session -d -s "$SESSION"
@@ -18,34 +16,13 @@ byobu-tmux new-window -t "${SESSION}:1" -n 'PROD-ZH'
 byobu-tmux new-window -t "${SESSION}:2" -n 'PUP-PROD-ZH'
 byobu-tmux new-window -t "${SESSION}:3" -n 'TEST-ZH'
 byobu-tmux new-window -t "${SESSION}:4" -n 'PUP-TEST-ZH'
-#byobu-tmux new-window -t "${SESSION}:5" -n 'MDC-LEGACY'
-
-#byobu-tmux new-window -t "${SESSION}:5" -n 'PROD-BE'
-#byobu-tmux new-window -t "${SESSION}:6" -n 'PROXY'
-#byobu-tmux split-window -v
-#byobu-tmux split-window -v
-#byobu-tmux select-pane -t 0
-
-# Launch proxies before the rest
-#byobu-tmux select-pane -t 0
-#byobu-tmux send-keys "ssh mpc-prod-ix-tun" C-m
-#byobu-tmux select-pane -t 1
-#byobu-tmux send-keys "ssh mpc-test-ix-tun" C-m
-#byobu-tmux select-pane -t 2
-#byobu-tmux send-keys "ssh mpc-prod-eq-tun" C-m
-#byobu-tmux select-pane -t 3
-#byobu-tmux send-keys "ssh tun-dev-be-pub" C-m
 
 # Connect remote sessions
 
-#byobu-tmux select-window -t "$SESSION:5"
-#byobu-tmux send-keys 'ssh mdc-backdoor' C-m
 
 byobu-tmux select-window -t "$SESSION:4"
 byobu-tmux send-keys 'ssh mpc-test-ix' C-m
 byobu-tmux send-keys 'ssh puppet38-zrh-01' C-m
-#byobu-tmux send-keys 'cd mpc_mgmt' C-m
-#byobu-tmux send-keys 'vim manifests/nodes.pp' C-m
 
 byobu-tmux select-window -t "$SESSION:3"
 byobu-tmux send-keys 'ssh mpc-test-ix' C-m
@@ -53,8 +30,6 @@ byobu-tmux send-keys 'ssh mpc-test-ix' C-m
 byobu-tmux select-window -t "$SESSION:2"
 byobu-tmux send-keys 'ssh mpc-prod-ix' C-m
 byobu-tmux send-keys 'ssh puppet38-zrh-01' C-m
-#byobu-tmux send-keys 'cd mpc_mgmt' C-m
-#byobu-tmux send-keys 'vim manifests/nodes.pp' C-m
 
 byobu-tmux select-window -t "$SESSION:1"
 byobu-tmux send-keys 'ssh mpc-prod-ix' C-m
