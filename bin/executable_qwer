@@ -5,8 +5,8 @@ echo "qwer isn't asdf" | toilet -f future | lolcat
 # work or die
 set -eu
 
-plug=$(asdf plugin-list | fzf --tac --height 15 --margin 1% --border --border-label="╢ $(echo select asdf plugin | lolcat -f) ╟")
+plug=$(asdf plugin list | fzf --tac --height 15 --margin 1% --border --border-label="╢ $(echo select asdf plugin | lolcat -f) ╟")
 curr=$(asdf list $plug 2>&1)
-vers=$(asdf list-all $plug | fzf --tac --no-sort --height 15 --margin 1% --border --border-label="╢ $(echo current $plug version: $curr | lolcat -f) ╟")
+vers=$(asdf list all $plug | fzf --tac --no-sort --height 15 --margin 1% --border --border-label="╢ $(echo current $plug version: $curr | lolcat -f) ╟")
 asdf install $plug $vers
-asdf  global $plug $vers
+asdf set --home $plug $vers
