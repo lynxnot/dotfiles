@@ -54,6 +54,7 @@ fi
 [[ -x $(command -v eksctl) ]]        && . <(eksctl completion bash)
 [[ -x $(command -v aws_completer) ]] && complete -C 'aws_completer' aws
 [[ -x $(command -v terraform) ]]     && complete -C 'terraform' terraform
+[[ -c $(command -v uv) ]]            && eval "$(uv generate-shell-completion bash)"
 
 ## environmentalisms
 export EDITOR=nvim

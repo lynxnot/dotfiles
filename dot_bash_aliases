@@ -58,3 +58,6 @@ alias kns='kubectl ns'
 alias ktx='kubectl ctx'
 
 alias ubu='lxc start ubuntu --console=vga >/dev/null 2>&1 &'
+
+alias tear='terraform apply -auto-approve'
+alias c='code .'
