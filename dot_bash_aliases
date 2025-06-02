@@ -61,3 +61,6 @@ alias ubu='lxc start ubuntu --console=vga >/dev/null 2>&1 &'
 
 alias tear='terraform apply -auto-approve'
 alias c='code .'
+alias m='mount | column -t'
+alias asl='aws sso login --profile services-prd'
+alias git-https="git remote set-url origin https://github.com/$(git remote get-url origin | sed 's/https:\/\/github.com\///' | sed 's/git@github.com://')"

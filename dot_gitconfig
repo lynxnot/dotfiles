@@ -5,6 +5,12 @@
 	clean = git-lfs clean -- %f
 [column]
 	;ui = auto
+[credential]
+	credentialStore = gpg
+	helper = 
+	helper = /home/d/.dotnet/tools/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
 [branch]
 	sort = -committerdate
 [tag]
@@ -36,7 +42,5 @@
 [user]
 	name = lynxnot
 	email = lynxnot@users.noreply.github.com
-[core]
-	sshCommand = ssh -i ~/.ssh/id_rsa
 [includeIf "gitdir:~/repos/github.com/SRGSSR/"]
 	path = ~/.gitconfig.work
