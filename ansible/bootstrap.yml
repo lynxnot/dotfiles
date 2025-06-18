@@ -70,6 +70,13 @@
           dest: /etc/apt/keyrings/gh-cli.gpg
         - url: https://downloads.k8slens.dev/keys/gpg
           dest: /etc/apt/keyrings/lens.asc
+        #- url: https://mise.jdx.dev/gpg-key.pub
+        #  dest: /etc/apt/keyrings/mise.gpg
+
+    - name: install mise gpg key
+      ansible.builtin.command:
+        cmd: "wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg"
+        creates: "/etc/apt/keyrings/mise-archive-keyring.gpg"
 
     - name: add apt repos
       become: true
@@ -91,42 +98,44 @@
           file: gh-cli
         - repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/lens.asc] https://downloads.k8slens.dev/apt/debian stable main"
           file: lens
+        - repo: "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64] https://mise.jdx.dev/deb stable main"
+          file: mise
 
     - name: install packages
       become: true
       ansible.builtin.apt:
         pkg:
-          - google-chrome-stable
-          - brave-browser
-          - code
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-          - docker-buildx-plugin
-          - docker-compose-plugin
-          - gh
-          - lens
           - alacritty
+          - audacity
           - automake
           - bind9-dnsutils
+          - brave-browser
           - bridge-utils
           - build-essential
           - byobu
           - clang
+          - code
+          - containerd.io
           - curl
+          - docker-buildx-plugin
+          - docker-ce
+          - docker-ce-cli
+          - docker-compose-plugin
           - dosfstools
-          - figlet
-          - audacity
           - ffmpeg
+          - figlet
+          - gh
           - gimp
+          - google-chrome-stable
           - gpac
           - inkscape
           - krita
+          - lens
           - llvm
           - lolcat
           - maven
           - mediainfo
-          - nala
+          - mise
           - python-is-python3
           - toilet
           - tree
@@ -179,49 +188,49 @@
         - com.github.johnfactotum.Foliate
         - md.obsidian.Obsidian
 
-    - name: check if asdf is installed
-      ansible.builtin.stat:
-        path: "{{ ansible_user_dir }}/.asdf/bin/asdf"
-      register: check_asdf
+    #- name: check if asdf is installed
+    #  ansible.builtin.stat:
+    #    path: "{{ ansible_user_dir }}/.asdf/bin/asdf"
+    #  register: check_asdf
 
-    - name: install asdf if necessary
-      ansible.builtin.git:
-        repo: https://github.com/asdf-vm/asdf.git
-        dest: "{{ ansible_user_dir }}/.asdf"
-        version: "{{ asdf_version }}"
-      when: not check_asdf.stat.exists
+    #- name: install asdf if necessary
+    #  ansible.builtin.git:
+    #    repo: https://github.com/asdf-vm/asdf.git
+    #    dest: "{{ ansible_user_dir }}/.asdf"
+    #    version: "{{ asdf_version }}"
+    #  when: not check_asdf.stat.exists
 
-    - name: install asdf plugins
-      ansible.builtin.command:
-        cmd: "{{ ansible_user_dir }}/.asdf/bin/asdf plugin-add {{ item }}"
-        creates: "{{ ansible_user_dir }}/.asdf/plugins/{{ item }}"
-      loop:
-        # tools set
-        - awscli
-        - bat
-        - bitwarden
-        - eksctl
-        - fzf
-        - helm
-        - krew
-        - kubectl
-        - neovim
-        - rclone
-        - ripgrep
-        - shellcheck
-        - starship
-        - terraform
-        - terraform-ls
-        - yarn
-        # languages set
-        - erlang
-        - golang
-        - java
-        - nim
-        - nodejs
-        - python
-        - rust
-        - stack
-        - zig
-        - zigmod
+    #- name: install asdf plugins
+    #  ansible.builtin.command:
+    #    cmd: "{{ ansible_user_dir }}/.asdf/bin/asdf plugin-add {{ item }}"
+    #    creates: "{{ ansible_user_dir }}/.asdf/plugins/{{ item }}"
+    #  loop:
+    #    # tools set
+    #    - awscli
+    #    - bat
+    #    - bitwarden
+    #    - eksctl
+    #    - fzf
+    #    - helm
+    #    - krew
+    #    - kubectl
+    #    - neovim
+    #    - rclone
+    #    - ripgrep
+    #    - shellcheck
+    #    - starship
+    #    - terraform
+    #    - terraform-ls
+    #    - yarn
+    #    # languages set
+    #    - erlang
+    #    - golang
+    #    - java
+    #    - nim
+    #    - nodejs
+    #    - python
+    #    - rust
+    #    - stack
+    #    - zig
+    #    - zigmod
 
