@@ -6,6 +6,8 @@ case $- in
       *) return;;
 esac
 
+#set -x
+
 # actually make sense, thx mrzool
 source ~/repos/github.com/mrzool/bash-sensible/sensible.bash
 
@@ -46,15 +48,19 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# meez-ahn-plahs
+eval "$(mise activate bash)"
+#mkdir -p ~/.local/share/bash-completion/completions
+#mise completion bash --include-bash-completion-lib > ~/.local/share/bash-completion/completions/mise
+
 ## compute to complete
-[[ -x $(command -v chezmoi) ]]       && . <(chezmoi completion bash)
-[[ -x $(command -v kubectl) ]]       && . <(kubectl completion bash)
-[[ -x $(command -v helm) ]]          && . <(helm completion bash)
-[[ -x $(command -v npm) ]]           && . <(npm completion)
-[[ -x $(command -v eksctl) ]]        && . <(eksctl completion bash)
 [[ -x $(command -v aws_completer) ]] && complete -C 'aws_completer' aws
+[[ -x $(command -v chezmoi) ]]       && . <(chezmoi completion bash)
+[[ -x $(command -v helm) ]]          && . <(helm completion bash)
+[[ -x $(command -v kubectl) ]]       && . <(kubectl completion bash)
+[[ -x $(command -v npm) ]]           && . <(npm completion)
 [[ -x $(command -v terraform) ]]     && complete -C 'terraform' terraform
-[[ -c $(command -v uv) ]]            && eval "$(uv generate-shell-completion bash)"
+[[ -x $(command -v uv) ]]            && eval "$(uv generate-shell-completion bash)"
 
 ## environmentalisms
 export EDITOR=nvim
@@ -65,11 +71,12 @@ export EDITOR=nvim
 ## asdf isn't qwer
 #. "$HOME"/.asdf/asdf.sh
 #. "$HOME"/.asdf/completions/asdf.bash
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-. <(asdf completion bash)
+#export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+#. <(asdf completion bash)
 
 ## got me a foozy foynder, m8
-[ -f "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"
+eval "$(fzf --bash)"
+#[ -f "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"
 
 # fuse mount that gdrive
 # this should migrate to profile and/or be smarter
@@ -81,40 +88,6 @@ fi
 yq ()
 {
   docker run --rm -i -v "${PWD}":/workdir mikefarah/yq "$@"
-}
-
-# dude, where is my repo?
-# this is too slow
-lr ()
-{
-    local repos=/home/d/repos
-    local repo=$(find ${repos} -type d -iname ".git" |
-        sed 's#/.git$##' |
-        sed "s#^${repos}/##" |
-        fzf)
-    cd $repos/$repo
-}
-
-# ansible in a container
-ansible29 ()
-{
-    docker run --rm -it \
-        -v "$(pwd)":/ansible \
-        -v "$HOME"/.ssh/id_rsa:/root/.ssh/id_rsa \
-        -v "$(readlink -f "$SSH_AUTH_SOCK")":/ssh-agent \
-        -e SSH_AUTH_SOCK=/ssh-agent \
-        --workdir=/ansible \
-        opensourcerero/ansible-2.9.10:latest "$@"
-}
-
-# git-sim
-# vely bloken, y keep?
-git-sim ()
-{
-    docker run --rm \
-        -v "$(pwd):/usr/src/git-sim" \
-        -u "$(id -u):$(id -g)" \
-        git-sim "$@"
 }
 
 # shellGL - vertex shaders technology
