@@ -53,7 +53,7 @@ alias senv='env | sort'
 alias ansible29-cli='ansible29 /bin/sh'
 
 alias kaws='kubectl run df-kaws --rm -it --image=amazon/aws-cli --command bash'
-alias ktit='kubectl run df-ktit --rm -it --image=giantswarm/tiny-tools -- sh'
+alias ktits='kubectl run onion-tools --rm -it --image=ghcr.io/fabianlee/tiny-tools-multi-arch:latest -- sh'
 alias kns='kubectl ns'
 alias ktx='kubectl ctx'
 
