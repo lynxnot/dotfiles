@@ -31,3 +31,5 @@ fi
 if [ -d "$HOME/.dotnet/tools" ] ; then
     PATH="$HOME/.dotnet/tools:$PATH"
 fi
+
+GOPATH="$HOME/repos/go"

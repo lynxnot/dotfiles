@@ -98,6 +98,12 @@ shell-gl ()
     DEV=1 ./colorscript.sh -e "$_name"
     popd >/dev/null
 }
+
+github-fingerprint ()
+{
+    local _filepath=$1
+    openssl rsa -in "$_filepath" -pubout -outform DER | openssl sha256 -binary | openssl base64
+}
  
 shell-gl-random ()
 {
